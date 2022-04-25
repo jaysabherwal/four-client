@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Action } from '../../models/action';
 import { Message } from '../../models/message';
-import './index.css';
 
 interface HomeProps {
     messages: Message[];
@@ -19,6 +18,13 @@ export function Home({ messages, sendMessage }: HomeProps) {
     const [displayMessage, setDisplayMessage] = useState('Start playing using the button below!');
     const [url, setURL] = useState('');
 
+    const handleJoin = useCallback((data) => {
+        const game = {
+            id: data.id
+        }
+        navigate(`/game/${data.id}`, { state: { game } });
+    }, [navigate]);
+
     useEffect(() => {
         const latestMessage = messages[messages.length - 1];
 
@@ -30,20 +36,13 @@ export function Home({ messages, sendMessage }: HomeProps) {
                 handleJoin(latestMessage.data);
                 break;
         }
-    }, [messages]);
+    }, [messages, handleJoin]);
 
     const handleCreate = (data) => {
         setDisplayMessage('Game created, your opponent can join using the link below');
         setURL(`${window.location.protocol}//${window.location.host}/game/${data.id}`);
         setCreated(true);
     };
-
-    const handleJoin = useCallback((data) => {
-        const game = {
-            id: data.id
-        }
-        navigate(`/game/${data.id}`, { state: { game } });
-    }, [navigate]);
 
     const handleCreateClick = () => {
         setLoading(true);

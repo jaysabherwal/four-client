@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Message } from '../../models/message';
 import { Game as GameModel } from '../../models/game';
-import './index.css';
 import { useLocation } from 'react-router-dom';
 import { Action } from '../../models/action';
 
@@ -42,7 +41,7 @@ export const Game = ({ messages, sendMessage }: GameProps) => {
         } else {
             // use JOIN message to get the game
         }
-    }, [messages, location.state]);
+    }, [messages, location.state, game]);
 
     const move = () => {
         const message = {
